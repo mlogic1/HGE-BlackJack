@@ -1,0 +1,3 @@
+#define MAINICON    1337
+
+MAINICON  ICON  "icon.ico"

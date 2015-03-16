@@ -1,0 +1,17 @@
+Textures/Icon/2D Art:
+Curt - opengameart.org/users/curt
+Shek - iconarchive.com/artist/shek0101.html
+dabuttonfactory.com/ 
+Game Background (flaming cards) - unknown source.
+
+Sounds:
+Splashdust - freesound.org
+
+Music:
+www.bensound.com
+
+Programming:
+HGE Engine - Pavel Lebedev (Haaf) and everyone on the HGE Project
+
+Game:
+Multilogic - github.com/mlogic1

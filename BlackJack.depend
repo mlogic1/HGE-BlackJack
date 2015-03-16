@@ -1,0 +1,64 @@
+# depslib dependency file v1.0
+1426460359 source:d:\programming\hge engine\blackjack\main.cpp
+	<hge.h>
+	<hgefont.h>
+	<hgesprite.h>
+	<hgevector.h>
+	<iostream>
+	<list>
+	<vector>
+	"button.h"
+	"card.h"
+
+1426286214 d:\programming\hge engine\blackjack\card.h
+	<hge.h>
+	<hgevector.h>
+
+1425831337 source:d:\code\blackjack\main.cpp
+	<hge.h>
+	<hgefont.h>
+	<hgesprite.h>
+	<hgevector.h>
+	<iostream>
+	<list>
+	<vector>
+	"button.h"
+	"card.h"
+
+1425668982 d:\code\blackjack\card.h
+	<hge.h>
+	<hgevector.h>
+
+1398577498 d:\code\blackjack\hgeanim.h
+	"hgesprite.h"
+
+1425661504 source:d:\code\blackjack\hgeanim.cpp
+	"hgeanim.h"
+
+1177599346 source:d:\code\hge181\src\helpers\hgeanim.cpp
+	"..\..\include\hgeanim.h"
+
+1177336080 d:\code\hge181\include\hgeanim.h
+	"hgesprite.h"
+
+1177599346 d:\code\hge181\include\hgesprite.h
+	"hge.h"
+	"hgerect.h"
+
+1202831304 d:\code\hge181\include\hge.h
+	<windows.h>
+
+1176900486 d:\code\hge181\include\hgerect.h
+
+1425671897 source:d:\code\blackjack\resources.rc
+
+1425742730 d:\code\blackjack\button.h
+	<hgesprite.h>
+	<hgevector.h>
+
+1426294494 d:\programming\hge engine\blackjack\button.h
+	<hgesprite.h>
+	<hgevector.h>
+
+1426295527 source:d:\programming\hge engine\blackjack\resources.rc
+
