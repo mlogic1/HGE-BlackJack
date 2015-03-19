@@ -696,8 +696,9 @@ bool FrameFunc()
 }
 
 void RenderEndGame(){
-    s_endgame->Render(256, 192);
-    text->printf(255, 455, HGETEXT_LEFT, "Dealer had: %d", DealerScore);
+    s_endgame->Render(250, 340);
+    text->printf(200, 50, HGETEXT_LEFT, "Dealer had: %d", DealerScore);
+    text->printf(200, 420, HGETEXT_LEFT, "Click anywhere to start a new round");
 }
 
 // This function will be called by HGE when
@@ -720,6 +721,7 @@ bool RenderFunc()
         RenderCards();
         RenderButtons();
     }else if(Gamestatus == 1 || Gamestatus == 2){
+        RenderCards();
         RenderEndGame();
     }
     RenderStats(devstats);
@@ -761,10 +763,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// Load sounds and textures
         background = hge->Texture_Load("Textures\\background.png");
         std::cout<<"Loading: "<<"Textures\\background.png"<<std::endl;
-        winTexture = hge->Texture_Load("Textures\\you_win.png");
-        std::cout<<"Loading: "<<"Textures\\you_win.png"<<std::endl;
-        loseTexture = hge->Texture_Load("Textures\\you_lose.png");
-        std::cout<<"Loading: "<<"Textures\\you_lose.png"<<std::endl;
+        winTexture = hge->Texture_Load("Textures\\Win.png");
+        std::cout<<"Loading: "<<"Textures\\Win.png"<<std::endl;
+        loseTexture = hge->Texture_Load("Textures\\Lose.png");
+        std::cout<<"Loading: "<<"Textures\\Lose.png"<<std::endl;
         CardBackTexture = hge->Texture_Load("Textures\\Cards\\back_black.png");
         std::cout<<"Loading: "<<"Textures\\Cards\\back_black.png"<<std::endl;
         flipsound = hge->Effect_Load("Sounds\\flipcard.wav");
@@ -787,7 +789,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         // Load Font
         text = new hgeFont("Fonts\\font1.fnt");
         s_background = new hgeSprite(background, 0,0, 1024, 768);
-        s_endgame = new hgeSprite(0, 0, 0, 512, 256);
+        s_endgame = new hgeSprite(0, 0, 0, 330, 70);
 
         // Music
         song = hge->Stream_Load("Sounds\\Music\\the_elevator_bossanova.mp3");
