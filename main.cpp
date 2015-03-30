@@ -691,6 +691,17 @@ bool FrameFunc()
     }
 
 
+
+    hge->Gfx_BeginScene();
+
+	// Clear screen with black color
+	hge->Gfx_Clear(0);
+
+    text->printf(500,500, HGETEXT_LEFT, "u fooken wot m8");
+
+	// End rendering and update the screen
+	hge->Gfx_EndScene();
+
 	// Continue execution
 	return false;
 }
