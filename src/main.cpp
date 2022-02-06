@@ -8,33 +8,33 @@
 
 HGE* hge = nullptr;
 
-bool FrameFunc()
+static bool FrameFunc()
 {
 	return false;
 }
 
-// This function will be called by HGE when
-// the application window should be redrawn.
-// Put your rendering code here.
-bool RenderFunc()
+static bool RenderFunc()
 {
 	// This function must be called
 	// before any actual rendering.
-	//hge->Gfx_BeginScene();
+	hge->Gfx_BeginScene();
 
 	// Clear screen with black color
-	//hge->Gfx_Clear(0);
+	hge->Gfx_Clear(0);
 
 	// End rendering and update the screen
-	// hge->Gfx_EndScene();
+	hge->Gfx_EndScene();
 
 	// RenderFunc should always return false
 	return false;
 }
 
+#include "CardGame/CardGame.h"
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
+	BlackJack::CardGame game;
+
 	// Get HGE interface
 	hge = hgeCreate(HGE_VERSION);
 
