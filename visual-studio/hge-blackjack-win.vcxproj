@@ -19,7 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\CardGame\Card.cpp" />
+    <ClCompile Include="..\src\CardGame\CardGame.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\CardGame\Card.h" />
+    <ClInclude Include="..\include\CardGame\CardGame.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -75,15 +81,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)..\\build\\$(Configuration)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)..\\build\\$(Configuration)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)..\\build\\$(Configuration)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)..\\build\\$(Configuration)</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -91,7 +101,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\\lib\\hge-1.8.1\\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\\include;$(ProjectDir)..\\lib\\hge-1.8.1\\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -99,6 +109,13 @@
       <AdditionalLibraryDirectories>$(ProjectDir)..\\lib\\hge-1.8.1\\lib\\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>hge.lib;hgehelpers.lib;zlib.lib</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>echo "Copying hge dll files to build directory"
+xcopy ..\\lib\\hge-1.8.1\\*.dll ..\\build\\$(Configuration) /s /d
+
+echo Copying assets to build directory"
+xcopy ..\\assets ..\\build\\$(Configuration) /E /H /C /I /s /d</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -108,7 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\\lib\\hge-1.8.1\\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\\include;$(ProjectDir)..\\lib\\hge-1.8.1\\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -118,6 +135,13 @@
       <AdditionalLibraryDirectories>$(ProjectDir)..\\lib\\hge-1.8.1\\lib\\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>hge.lib;hgehelpers.lib;zlib.lib</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>echo "Copying hge dll files to build directory"
+xcopy ..\\lib\\hge-1.8.1\\*.dll ..\\build\\$(Configuration) /s /d
+
+echo Copying assets to build directory"
+xcopy ..\\assets ..\\build\\$(Configuration) /E /H /C /I /s /d</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -125,7 +149,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\\lib\\hge-1.8.1\\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\\include;$(ProjectDir)..\\lib\\hge-1.8.1\\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,6 +157,13 @@
       <AdditionalLibraryDirectories>$(ProjectDir)..\\lib\\hge-1.8.1\\lib\\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>hge.lib;hgehelpers.lib;zlib.lib</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>echo "Copying hge dll files to build directory"
+xcopy ..\\lib\\hge-1.8.1\\*.dll ..\\build\\$(Configuration) /s /d
+
+echo Copying assets to build directory"
+xcopy ..\\assets ..\\build\\$(Configuration) /E /H /C /I /s /d</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -142,7 +173,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\\lib\\hge-1.8.1\\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\\include;$(ProjectDir)..\\lib\\hge-1.8.1\\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,6 +183,13 @@
       <AdditionalLibraryDirectories>$(ProjectDir)..\\lib\\hge-1.8.1\\lib\\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>hge.lib;hgehelpers.lib;zlib.lib</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>echo "Copying hge dll files to build directory"
+xcopy ..\\lib\\hge-1.8.1\\*.dll ..\\build\\$(Configuration) /s /d
+
+echo Copying assets to build directory"
+xcopy ..\\assets ..\\build\\$(Configuration) /E /H /C /I /s /d</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
