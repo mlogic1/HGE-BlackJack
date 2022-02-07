@@ -5,11 +5,17 @@
 #include <iostream>
 #include <list>
 #include <vector>
+#include <memory>
+
+// scenes
+#include "View/SceneGame.h"
 
 HGE* hge = nullptr;
+std::unique_ptr<IScene> currentScene;
 
 static bool FrameFunc()
 {
+	currentScene->Update(hge->Timer_GetDelta());
 	return false;
 }
 
@@ -21,6 +27,8 @@ static bool RenderFunc()
 
 	// Clear screen with black color
 	hge->Gfx_Clear(0);
+
+	currentScene->Render();
 
 	// End rendering and update the screen
 	hge->Gfx_EndScene();
@@ -39,7 +47,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	hge = hgeCreate(HGE_VERSION);
 
 	// Set up log file, frame function, render function and window title
-	hge->System_SetState(HGE_LOGFILE, "hge-blackjack-log.log");
+	hge->System_SetState(HGE_LOGFILE, "hge-blackjack.log");
 	hge->System_SetState(HGE_FRAMEFUNC, FrameFunc);
 	hge->System_SetState(HGE_RENDERFUNC, RenderFunc);
 	hge->System_SetState(HGE_TITLE, "BlackJack Card Game");
@@ -55,12 +63,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	bool error = false;
 	if (hge->System_Initiate())
 	{
+		currentScene = std::make_unique<SceneGame>(hge);
 		hge->System_Start();
 	}
 	else {
 		error = true;
 	}
-		
+	
+	currentScene.release();
 	// Clean up and shutdown
 	hge->System_Shutdown();
 	hge->Release();

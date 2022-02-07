@@ -22,10 +22,13 @@
     <ClCompile Include="..\src\CardGame\Card.cpp" />
     <ClCompile Include="..\src\CardGame\CardGame.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\View\SceneGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CardGame\Card.h" />
     <ClInclude Include="..\include\CardGame\CardGame.h" />
+    <ClInclude Include="..\include\View\IScene.h" />
+    <ClInclude Include="..\include\View\SceneGame.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -114,7 +117,7 @@
 xcopy ..\\lib\\hge-1.8.1\\*.dll ..\\build\\$(Configuration) /s /d
 
 echo Copying assets to build directory"
-xcopy ..\\assets ..\\build\\$(Configuration) /E /H /C /I /s /d</Command>
+xcopy ..\\assets ..\\build\\$(Configuration)\\assets /E /H /C /I /s /d</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -140,7 +143,7 @@ xcopy ..\\assets ..\\build\\$(Configuration) /E /H /C /I /s /d</Command>
 xcopy ..\\lib\\hge-1.8.1\\*.dll ..\\build\\$(Configuration) /s /d
 
 echo Copying assets to build directory"
-xcopy ..\\assets ..\\build\\$(Configuration) /E /H /C /I /s /d</Command>
+xcopy ..\\assets ..\\build\\$(Configuration)\\assets /E /H /C /I /s /d</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -162,7 +165,7 @@ xcopy ..\\assets ..\\build\\$(Configuration) /E /H /C /I /s /d</Command>
 xcopy ..\\lib\\hge-1.8.1\\*.dll ..\\build\\$(Configuration) /s /d
 
 echo Copying assets to build directory"
-xcopy ..\\assets ..\\build\\$(Configuration) /E /H /C /I /s /d</Command>
+xcopy ..\\assets ..\\build\\$(Configuration)\\assets /E /H /C /I /s /d</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -188,7 +191,7 @@ xcopy ..\\assets ..\\build\\$(Configuration) /E /H /C /I /s /d</Command>
 xcopy ..\\lib\\hge-1.8.1\\*.dll ..\\build\\$(Configuration) /s /d
 
 echo Copying assets to build directory"
-xcopy ..\\assets ..\\build\\$(Configuration) /E /H /C /I /s /d</Command>
+xcopy ..\\assets ..\\build\\$(Configuration)\\assets /E /H /C /I /s /d</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
