@@ -14,10 +14,15 @@ SceneGame::~SceneGame()
 
 void SceneGame::Update(float dt)
 {
-    
+
 }
 
 void SceneGame::Render()
 {
 	m_backgroundSprite->Render(0, 0);
+}
+
+void SceneGame::OnStartRound(BlackJack::CardGameDeckType deckType)
+{
+
 }

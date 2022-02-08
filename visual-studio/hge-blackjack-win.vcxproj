@@ -27,6 +27,10 @@
   <ItemGroup>
     <ClInclude Include="..\include\CardGame\Card.h" />
     <ClInclude Include="..\include\CardGame\CardGame.h" />
+    <ClInclude Include="..\include\CardGame\CardGameDeckType.h" />
+    <ClInclude Include="..\include\CardGame\CardGameState.h" />
+    <ClInclude Include="..\include\CardGame\ICardGameEventListener.h" />
+    <ClInclude Include="..\include\CardGame\PlayerAction.h" />
     <ClInclude Include="..\include\View\IScene.h" />
     <ClInclude Include="..\include\View\SceneGame.h" />
   </ItemGroup>

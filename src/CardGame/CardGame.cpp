@@ -1,26 +1,41 @@
 #include "CardGame/CardGame.h"
+#include "CardGame/ICardGameEventListener.h"
 #include <algorithm>
 #include <random>
 
+#define TRIGGER_EVENT(func, args) if(m_eventListener) { m_eventListener->func(args); }
+
 namespace BlackJack
 {
-	CardGame::CardGame(CardGameDeckType deckType) :
-		m_deckType(deckType)
+	CardGame::CardGame(CardGameDeckType deckType, ICardGameEventListener* eventListener) :
+		m_deckType(deckType),
+		m_eventListener(eventListener)
 	{
 		Reset();
+	}
+
+	CardGame::~CardGame()
+	{
+		ClearCardCollection(m_currentDeck);
+		ClearCardCollection(m_dealerHand);
+		ClearCardCollection(m_playerHand);
+		ClearCardCollection(m_playerSplitHand);
 	}
 	
 	void CardGame::Reset()
 	{
-		m_gameState = CardGameState::PRE_START;
-		m_currentDeck.clear();
-		const int decksToGenerate = static_cast<int>(m_deckType);
+		ClearCardCollection(m_currentDeck);
+		ClearCardCollection(m_dealerHand);
+		ClearCardCollection(m_playerHand);
+		ClearCardCollection(m_playerSplitHand);
 		
+		m_gameState = CardGameState::PRE_START;
+		const int decksToGenerate = static_cast<int>(m_deckType);
 		for (int i = 0; i < decksToGenerate; ++i) 
 		{
-			std::vector<Card> generatedDeck = GenerateDeck();
+			std::vector<Card*> generatedDeck = GenerateDeck();
 
-			for (Card& card : generatedDeck)
+			for (Card* card : generatedDeck)
 				m_currentDeck.emplace_back(card);
 		}
 		ShuffleDeck(m_currentDeck);
@@ -34,7 +49,7 @@ namespace BlackJack
 
 	bool CardGame::CanSplit()
 	{
-		return (m_playerHand.size() == 2 && m_playerSplitHand.empty() && m_playerHand[0].GetDenominator() == m_playerHand[1].GetDenominator() && m_gameState == CardGameState::PLAYING);
+		return (m_playerHand.size() == 2 && m_playerSplitHand.empty() && m_playerHand[0]->GetDenominator() == m_playerHand[1]->GetDenominator() && m_gameState == CardGameState::PLAYING);
 	}
 
 	bool CardGame::CanDoubleDown()
@@ -53,7 +68,7 @@ namespace BlackJack
 		if (!CanHit())
 			return false;
 		
-		Card card = DrawCardFromDeck();
+		Card* card = DrawCardFromDeck();
 		if (m_gameState == CardGameState::PLAYING || m_gameState == CardGameState::PLAYING_SPLIT_A)
 		{
 			m_playerHand.emplace_back(card);
@@ -76,7 +91,7 @@ namespace BlackJack
 		if (!CanSplit())
 			return false;
 		
-		Card card = m_playerHand.back();
+		Card* card = m_playerHand.back();
 		m_playerHand.pop_back();
 		m_playerSplitHand.emplace_back(card);
 		m_gameState = CardGameState::PLAYING_SPLIT_A;
@@ -90,7 +105,7 @@ namespace BlackJack
 		if (!CanDoubleDown())
 			return false;
 
-		Card card = DrawCardFromDeck();
+		Card* card = DrawCardFromDeck();
 		m_playerHand.emplace_back(card);
 
 		EndPlayerAction(PlayerAction::DOUBLEDOWN);
@@ -111,7 +126,7 @@ namespace BlackJack
 		if ((m_gameState != CardGameState::PRE_START) && (m_gameState != CardGameState::DRAW) && (m_gameState != CardGameState::PLAYER_BUST) && (m_gameState != CardGameState::PLAYER_WIN) && (m_gameState != CardGameState::DEALER_WIN))
 			return false;
 		// TODO - check the deck - reshuffle if needed
-		// TODO trigger callback
+		TRIGGER_EVENT(OnStartRound, m_deckType);
 
 		m_gameState = CardGameState::PLAYING;
 
@@ -119,10 +134,10 @@ namespace BlackJack
 		m_playerHand.clear();
 		m_playerSplitHand.clear();
 		
-		Card p1 = DrawCardFromDeck();
-		Card d1 = DrawCardFromDeck();
-		Card p2 = DrawCardFromDeck();
-		Card d2 = DrawCardFromDeck();
+		Card* p1 = DrawCardFromDeck();
+		Card* d1 = DrawCardFromDeck();
+		Card* p2 = DrawCardFromDeck();
+		Card* d2 = DrawCardFromDeck();
 		
 		m_playerHand.emplace_back(p1);
 		m_dealerHand.emplace_back(d1);
@@ -130,50 +145,56 @@ namespace BlackJack
 		m_dealerHand.emplace_back(d2);
 	}
 
-	Card CardGame::DrawCardFromDeck()
+	Card* CardGame::DrawCardFromDeck()
 	{
-		Card card = m_currentDeck.back();
+		Card* card = m_currentDeck.back();
 		m_currentDeck.pop_back();
+
+		TRIGGER_EVENT(OnDrawCardFromDeck, card);
+
 		return card;
 	}
 
 	int CardGame::GetDealerScore()
 	{
 		int sum = 0;
-		std::for_each(m_dealerHand.cbegin(), m_dealerHand.cend(), [&sum](const Card& card) { sum += card.GetValue(); });
+		std::for_each(m_dealerHand.cbegin(), m_dealerHand.cend(), [&sum](const Card* card) { sum += card->GetValue(); });
 		return sum;
 	}
 
 	int CardGame::GetPlayerScore()
 	{
-		std::vector<Card>* ptrToHand = (m_gameState == CardGameState::PLAYING_SPLIT_B) ? &m_playerSplitHand : &m_playerHand;
+		std::vector<Card*>* ptrToHand = (m_gameState == CardGameState::PLAYING_SPLIT_B) ? &m_playerSplitHand : &m_playerHand;
 		int sum = 0;
-		std::for_each(m_playerHand.cbegin(), m_playerHand.cend(), [&sum](const Card& card) { sum += card.GetValue(); });
+		std::for_each(m_playerHand.cbegin(), m_playerHand.cend(), [&sum](const Card* card) { sum += card->GetValue(); });
 		return sum;
 	}
 
 	void CardGame::EndPlayerAction(PlayerAction action)
 	{
+		TRIGGER_EVENT(OnEndPlayerAction, action);
 		// check if player busted
 		// if busted, go to busted state and wait for startNewRound call
 		// else check if action was stand or double down - if yes, move on to dealer's turn
-
-
-
 	}
 
-	std::vector<Card> CardGame::GenerateDeck()
+	void CardGame::ClearCardCollection(std::vector<Card*>& vector)
 	{
-		std::vector<Card> cardsInOrder;
+		std::for_each(vector.begin(), vector.end(), [](Card* card) { delete card; });
+	}
+
+	std::vector<Card*> CardGame::GenerateDeck()
+	{
+		std::vector<Card*> cardsInOrder;
 		static constexpr int NUM_CARDS = 52;
 
 		for (int i = 0; i < NUM_CARDS; ++i)
-			cardsInOrder.emplace_back(CARDS_DATA[i].first, CARDS_DATA[i].second);
+			cardsInOrder.emplace_back(new Card(CARDS_DATA[i].first, CARDS_DATA[i].second));
 
 		return cardsInOrder;
 	}
 	
-	void CardGame::ShuffleDeck(std::vector<Card>& deck)
+	void CardGame::ShuffleDeck(std::vector<Card*>& deck)
 	{
 		auto rng = std::default_random_engine{};
 		std::shuffle(deck.begin(), deck.end(), rng);
