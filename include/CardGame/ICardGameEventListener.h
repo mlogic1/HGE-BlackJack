@@ -14,6 +14,7 @@ namespace BlackJack
 		virtual void OnStartRound(CardGameDeckType deckType) {};
 		virtual void OnDrawCardFromDeck(const Card* card) {};
 		virtual void OnEndPlayerAction(PlayerAction action) {};
+		virtual void OnPlayerHit(const Card* card) {};
 
 		friend class CardGame;
 	};

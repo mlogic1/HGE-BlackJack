@@ -29,7 +29,7 @@ namespace BlackJack
 		ClearCardCollection(m_playerHand);
 		ClearCardCollection(m_playerSplitHand);
 		
-		m_gameState = CardGameState::PRE_START;
+		ChangeGameState(CardGameState::PRE_START);
 		const int decksToGenerate = static_cast<int>(m_deckType);
 		for (int i = 0; i < decksToGenerate; ++i) 
 		{
@@ -82,6 +82,7 @@ namespace BlackJack
 			return false;
 		}
 
+		TRIGGER_EVENT(OnPlayerHit, card);
 		EndPlayerAction(PlayerAction::HIT);
 		return true;
 	}
@@ -128,7 +129,7 @@ namespace BlackJack
 		// TODO - check the deck - reshuffle if needed
 		TRIGGER_EVENT(OnStartRound, m_deckType);
 
-		m_gameState = CardGameState::PLAYING;
+		ChangeGameState(CardGameState::PLAYING);
 
 		m_dealerHand.clear();
 		m_playerHand.clear();
@@ -143,6 +144,14 @@ namespace BlackJack
 		m_dealerHand.emplace_back(d1);
 		m_playerHand.emplace_back(p2);
 		m_dealerHand.emplace_back(d2);
+
+		TRIGGER_EVENT(OnPlayerHit, p1);
+		TRIGGER_EVENT(OnPlayerHit, p2);
+	}
+
+	CardGameState CardGame::GetCardGameState() const
+	{
+		return m_gameState;
 	}
 
 	Card* CardGame::DrawCardFromDeck()
@@ -155,32 +164,68 @@ namespace BlackJack
 		return card;
 	}
 
-	int CardGame::GetDealerScore()
+	int CardGame::GetDealerScore() const
 	{
 		int sum = 0;
 		std::for_each(m_dealerHand.cbegin(), m_dealerHand.cend(), [&sum](const Card* card) { sum += card->GetValue(); });
 		return sum;
 	}
 
-	int CardGame::GetPlayerScore()
+	int CardGame::GetPlayerScore() const
 	{
-		std::vector<Card*>* ptrToHand = (m_gameState == CardGameState::PLAYING_SPLIT_B) ? &m_playerSplitHand : &m_playerHand;
+		const std::vector<Card*>* ptrToHand = (m_gameState == CardGameState::PLAYING_SPLIT_B) ? &m_playerSplitHand : &m_playerHand;
 		int sum = 0;
 		std::for_each(m_playerHand.cbegin(), m_playerHand.cend(), [&sum](const Card* card) { sum += card->GetValue(); });
 		return sum;
 	}
 
+	std::vector<const Card*> CardGame::GetPlayerHand() const
+	{
+		if (m_gameState == CardGameState::PLAYING_SPLIT_B) 
+		{
+			return std::vector<const Card*>(m_playerSplitHand.cbegin(), m_playerSplitHand.cend());
+		}
+		
+		return std::vector<const Card*>(m_playerHand.cbegin(), m_playerHand.cend());
+	}
+
+	std::vector<const Card*> CardGame::GetDealerHand() const
+	{
+		return std::vector<const Card*>(m_dealerHand.cbegin(), m_dealerHand.cend());
+	}
+
 	void CardGame::EndPlayerAction(PlayerAction action)
 	{
 		TRIGGER_EVENT(OnEndPlayerAction, action);
+		if (GetPlayerScore() > 21)
+		{
+			//if (goldenBlackjack)	// TODO implement this
+			ChangeGameState(CardGameState::PLAYER_BUST);
+		}
+		else if (action == PlayerAction::STAND || action == PlayerAction::DOUBLEDOWN) 
+		{
+			ChangeGameState(CardGameState::DEALER_PLAYING);
+
+			// dealer logic
+		}
+		else
+		{
+			// player keeps playing
+		}
 		// check if player busted
 		// if busted, go to busted state and wait for startNewRound call
 		// else check if action was stand or double down - if yes, move on to dealer's turn
 	}
 
+	void CardGame::ChangeGameState(CardGameState newState)
+	{
+		m_gameState = newState;
+	}
+
 	void CardGame::ClearCardCollection(std::vector<Card*>& vector)
 	{
 		std::for_each(vector.begin(), vector.end(), [](Card* card) { delete card; });
+		vector.clear();
 	}
 
 	std::vector<Card*> CardGame::GenerateDeck()

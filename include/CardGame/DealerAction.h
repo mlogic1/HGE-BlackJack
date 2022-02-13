@@ -2,11 +2,9 @@
 
 namespace BlackJack
 {
-	enum class PlayerAction
+	enum class DealerAction
 	{
 		HIT = 0,
-		SPLIT,
-		DOUBLEDOWN,
 		STAND
 	};
 }

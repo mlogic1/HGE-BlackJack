@@ -29,13 +29,16 @@ namespace BlackJack
 
 		bool StartRound();
 
+		CardGameState GetCardGameState() const;
+		int GetDealerScore() const;
+		int GetPlayerScore() const;
+		std::vector<const Card*> GetPlayerHand() const;
+		std::vector<const Card*> GetDealerHand() const;
+
 	private:
 		Card* DrawCardFromDeck();
-
-		int GetDealerScore();
-		int GetPlayerScore();
-
 		void EndPlayerAction(PlayerAction action);
+		void ChangeGameState(CardGameState newState);
 
 	private:	// utility functions
 		static std::vector<Card*> GenerateDeck();

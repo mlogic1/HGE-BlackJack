@@ -41,8 +41,6 @@ static bool RenderFunc()
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-	BlackJack::CardGame game;
-
 	// Get HGE interface
 	hge = hgeCreate(HGE_VERSION);
 
@@ -55,10 +53,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	// Set up video mode
 	hge->System_SetState(HGE_WINDOWED, true);
-	hge->System_SetState(HGE_SCREENWIDTH, 1024);
-	hge->System_SetState(HGE_SCREENHEIGHT, 768);
+	hge->System_SetState(HGE_SCREENWIDTH, 1280);
+	hge->System_SetState(HGE_SCREENHEIGHT, 720);
 	hge->System_SetState(HGE_SCREENBPP, 32);
-	hge->System_SetState(HGE_FPS, 62);
+	hge->System_SetState(HGE_FPS, 165);
 
 	bool error = false;
 	if (hge->System_Initiate())

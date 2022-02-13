@@ -6,6 +6,7 @@ namespace BlackJack
 	{
 		PRE_START = 0,
 		PLAYING,
+		DEALER_PLAYING,
 		PLAYING_SPLIT_A,
 		PLAYING_SPLIT_B,
 		PLAYER_BUST,
