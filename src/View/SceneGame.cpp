@@ -67,17 +67,21 @@ void SceneGame::Update(float dt)
 		}
 	}
 
-	for (CardView* cardView : m_cardViews)
+	for (CardView* cardView : m_playerCardViews)
+		cardView->Update(dt);
+
+	for (CardView* cardView : m_dealerCardViews)
 		cardView->Update(dt);
 }
 
 void SceneGame::Render()
 {
 	m_backgroundSprite->Render(.0f, .0f);
-	for (CardView* cardView : m_cardViews)
-	{
+	for (CardView* cardView : m_playerCardViews)
 		cardView->Render(cardView->GetX(), cardView->GetY());
-	}
+
+	for (CardView* cardView : m_dealerCardViews)
+		cardView->Render(cardView->GetX(), cardView->GetY());
 
 	m_deckBackSprite->Render(DECK_POS_X, DECK_POS_Y);
 
@@ -88,22 +92,38 @@ void SceneGame::Render()
 
 void SceneGame::OnStartRound(BlackJack::CardGameDeckType deckType)
 {
-	for (CardView* cardView : m_cardViews)
-	{
+	for (CardView* cardView : m_playerCardViews)
 		delete cardView;
-	}
-	m_cardViews.clear();
+
+	for (CardView* cardView : m_dealerCardViews)
+		delete cardView;
+
+	m_playerCardViews.clear();
+	m_dealerCardViews.clear();
 }
 
 void SceneGame::OnPlayerHit(const BlackJack::Card* card)
 {
 	CardView* cardView = m_cardViewFactory->Create(card);
 
-	const float posX = PLAYER_FIRST_CARD_POS_X + (m_cardViews.size() * DIMEN_CARD_W) + CARDS_OFFSET_X;
+	const float posX = PLAYER_FIRST_CARD_POS_X + (m_playerCardViews.size() * DIMEN_CARD_W) + CARDS_OFFSET_X;
 	const float posY = PLAYER_FIRST_CARD_POS_Y;
 	cardView->MoveToPosition(posX, posY);
 
-	m_cardViews.emplace_back(cardView);
+	m_playerCardViews.emplace_back(cardView);
+
+	// play the draw sound
+}
+
+void SceneGame::OnDealerHit(const BlackJack::Card* card)
+{
+	CardView* cardView = m_cardViewFactory->Create(card);
+
+	const float posX = DEALER_FIRST_CARD_POS_X + (m_dealerCardViews.size() * DIMEN_CARD_W) + CARDS_OFFSET_X;
+	const float posY = DEALER_FIRST_CARD_POS_Y;
+	cardView->MoveToPosition(posX, posY);
+
+	m_dealerCardViews.emplace_back(cardView);
 
 	// play the draw sound
 }

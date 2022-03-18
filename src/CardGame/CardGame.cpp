@@ -147,6 +147,9 @@ namespace BlackJack
 
 		TRIGGER_EVENT(OnPlayerHit, p1);
 		TRIGGER_EVENT(OnPlayerHit, p2);
+
+		TRIGGER_EVENT(OnDealerHit, d1);
+		TRIGGER_EVENT(OnDealerHit, d2);
 	}
 
 	CardGameState CardGame::GetCardGameState() const

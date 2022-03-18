@@ -21,6 +21,7 @@ class SceneGame : public IScene, public BlackJack::ICardGameEventListener
 	private:	// events from card game
 		virtual void OnStartRound(BlackJack::CardGameDeckType deckType) override;
 		virtual void OnPlayerHit(const BlackJack::Card* card) override;
+		virtual void OnDealerHit(const BlackJack::Card* card) override;
 
 	private:
 		BlackJack::CardGame* m_cardGame;
@@ -34,7 +35,8 @@ class SceneGame : public IScene, public BlackJack::ICardGameEventListener
 		// hgeFont* m_sceneFont;
 
 		CardViewFactory* m_cardViewFactory;
-		std::vector<CardView*> m_cardViews;
+		std::vector<CardView*> m_playerCardViews;
+		std::vector<CardView*> m_dealerCardViews;
 	
 	#ifdef _DEBUG
 		hgeFont* m_debugFont;
@@ -49,7 +51,9 @@ class SceneGame : public IScene, public BlackJack::ICardGameEventListener
 
 		static constexpr float PLAYER_FIRST_CARD_POS_X = 65.0f;
 		static constexpr float PLAYER_FIRST_CARD_POS_Y = 450.0f;
-		static constexpr float CARDS_OFFSET_X = 64.0f;
+		static constexpr float DEALER_FIRST_CARD_POS_X = DECK_POS_X + 90.0f;
+		static constexpr float DEALER_FIRST_CARD_POS_Y = DECK_POS_Y;
+		static constexpr float CARDS_OFFSET_X = 164.0f;
 
 		static constexpr int DIMEN_CARD_W = 140;
 		static constexpr int DIMEN_CARD_H = 190;
