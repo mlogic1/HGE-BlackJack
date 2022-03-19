@@ -121,6 +121,29 @@ namespace BlackJack
 		EndPlayerAction(PlayerAction::STAND);
 		return true;
 	}
+
+	bool CardGame::DealerHit()
+	{
+		if (m_gameState != CardGameState::DEALER_PLAYING)
+			return false;
+
+		Card* card = DrawCardFromDeck();
+		m_dealerHand.emplace_back(card);
+		TRIGGER_EVENT(OnDealerHit, card);
+		EndDealerAction(DealerAction::HIT);
+		return true;
+	}
+
+	bool CardGame::DealerStand()
+	{
+		if (m_gameState != CardGameState::DEALER_PLAYING)
+			return false;
+
+		TRIGGER_EVENT(OnDealerStand);
+		EndDealerAction(DealerAction::STAND);
+
+		return true;
+	}
 	
 	bool CardGame::StartRound()
 	{
@@ -208,16 +231,20 @@ namespace BlackJack
 		else if (action == PlayerAction::STAND || action == PlayerAction::DOUBLEDOWN) 
 		{
 			ChangeGameState(CardGameState::DEALER_PLAYING);
+		}
+	}
 
-			// dealer logic
+	void CardGame::EndDealerAction(DealerAction action)
+	{
+		const int dealerScore = GetDealerScore();
+		const int playerScore = GetPlayerScore();
+
+		if (dealerScore > 21) {	// missing aces check
+			ChangeGameState(CardGameState::PLAYER_WIN);
 		}
-		else
-		{
-			// player keeps playing
+		else if (dealerScore > playerScore) {
+			ChangeGameState(CardGameState::DEALER_WIN);
 		}
-		// check if player busted
-		// if busted, go to busted state and wait for startNewRound call
-		// else check if action was stand or double down - if yes, move on to dealer's turn
 	}
 
 	void CardGame::ChangeGameState(CardGameState newState)

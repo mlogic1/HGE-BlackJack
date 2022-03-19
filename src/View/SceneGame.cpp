@@ -16,6 +16,7 @@ SceneGame::SceneGame(HGE* hge) :
 
 	m_cardViewFactory = new CardViewFactory(m_hge);
 	m_cardGame = new BlackJack::CardGame(BlackJack::CardGameDeckType::STANDARD, this);
+	m_aiDealer = new AIDealer(m_cardGame);
 }
 
 SceneGame::~SceneGame()
@@ -30,6 +31,7 @@ SceneGame::~SceneGame()
 	m_hge->Texture_Free(m_backgroundTexture);
 	m_hge->Texture_Free(m_cardBackTexture);
 
+	delete m_aiDealer;
 	delete m_cardGame;
 	delete m_cardViewFactory;
 	// TODO clean up card views
@@ -72,6 +74,8 @@ void SceneGame::Update(float dt)
 
 	for (CardView* cardView : m_dealerCardViews)
 		cardView->Update(dt);
+
+	m_aiDealer->Update(dt);
 }
 
 void SceneGame::Render()

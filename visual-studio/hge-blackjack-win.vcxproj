@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\CardGame\AIDealer.cpp" />
+    <ClCompile Include="..\src\AI\AIDealer.cpp" />
     <ClCompile Include="..\src\CardGame\Card.cpp" />
     <ClCompile Include="..\src\CardGame\CardGame.cpp" />
     <ClCompile Include="..\src\main.cpp" />
@@ -28,13 +28,12 @@
     <ClCompile Include="..\src\View\SceneGame.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\CardGame\AIDealer.h" />
+    <ClInclude Include="..\include\AI\AIDealer.h" />
     <ClInclude Include="..\include\CardGame\Card.h" />
     <ClInclude Include="..\include\CardGame\CardGame.h" />
     <ClInclude Include="..\include\CardGame\CardGameDeckType.h" />
     <ClInclude Include="..\include\CardGame\CardGameState.h" />
     <ClInclude Include="..\include\CardGame\DealerAction.h" />
-    <ClInclude Include="..\include\CardGame\IAIDealer.h" />
     <ClInclude Include="..\include\CardGame\ICardGameEventListener.h" />
     <ClInclude Include="..\include\CardGame\PlayerAction.h" />
     <ClInclude Include="..\include\View\CardView.h" />

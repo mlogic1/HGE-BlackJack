@@ -7,6 +7,7 @@
 #include "CardView.h"
 #include "CardGame/ICardGameEventListener.h"
 #include "CardGame/CardGame.h"
+#include "AI/AIDealer.h"
 
 class CardViewFactory;
 
@@ -25,6 +26,7 @@ class SceneGame : public IScene, public BlackJack::ICardGameEventListener
 
 	private:
 		BlackJack::CardGame* m_cardGame;
+		AIDealer* m_aiDealer;
 
 		HGE* m_hge;
 

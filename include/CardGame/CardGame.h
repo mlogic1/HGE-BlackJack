@@ -4,6 +4,7 @@
 #include "ICardGameEventListener.h"
 #include "CardGameDeckType.h"
 #include "CardGameState.h"
+#include "DealerAction.h"
 #include "PlayerAction.h"
 #include <utility>
 #include <vector>
@@ -27,6 +28,9 @@ namespace BlackJack
 		bool DoubleDown();
 		bool Stand();
 
+		bool DealerHit();
+		bool DealerStand();
+
 		bool StartRound();
 
 		CardGameState GetCardGameState() const;
@@ -38,6 +42,7 @@ namespace BlackJack
 	private:
 		Card* DrawCardFromDeck();
 		void EndPlayerAction(PlayerAction action);
+		void EndDealerAction(DealerAction action);
 		void ChangeGameState(CardGameState newState);
 
 	private:	// utility functions
