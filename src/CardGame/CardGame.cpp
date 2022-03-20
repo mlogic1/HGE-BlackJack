@@ -201,7 +201,14 @@ namespace BlackJack
 	{
 		const std::vector<Card*>* ptrToHand = (m_gameState == CardGameState::PLAYING_SPLIT_B) ? &m_playerSplitHand : &m_playerHand;
 		int sum = 0;
-		std::for_each(m_playerHand.cbegin(), m_playerHand.cend(), [&sum](const Card* card) { sum += card->GetValue(); });
+		std::for_each(ptrToHand->cbegin(), ptrToHand->cend(), [&sum](const Card* card) { sum += card->GetValue(); });
+
+		// TODO: implement ace deduction
+		/*const int aceCount = std::count_if(ptrToHand->cbegin(), ptrToHand->cend(), [](const Card* card) { return card->IsAce(); });
+		if (sum > 21 && aceCount > 0) {
+			sum = 0;
+			std::for_each(ptrToHand->cbegin(), ptrToHand->cend(), [&sum](const Card* card) { sum += card->GetValue(); });
+		}*/
 		return sum;
 	}
 
